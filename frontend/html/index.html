@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Komis Samochodowy | Strona główna</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            font-style: italic;
+            margin-top: 10px;
+            font-weight: normal;
+        }
+
+        header {
+            max-width: 1200px;
+            margin: 0 auto 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0);
+        }
+
+        .logo-container {
+            padding-left: 20px;
+        }
+
+        .search-controls {
+            flex-grow: 1;
+            margin-left: 30px;
+            max-width: 800px;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            font-size: 15px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #0066cc;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
+        }
+
+        .search-button {
+            padding: 12px 25px;
+            background-color: #0066cc;
+            color: #fffdfd;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-button:hover {
+            background-color: #014485;
+        }
+
+        .site-logo {
+            max-width: 350px;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .site-logo:hover {
+            transform: scale(1.02);
+        }
+
+        .cars-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Zmniejszono z 300px na 260px */
+            gap: 20px; /* Zmniejszono z 25px na 20px */
+            padding: 20px 0;
+        }
+
+        .car-card {
+            background: white;
+            border-radius: 8px; /* Zmniejszono z 10px na 8px */
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Lżejszy cień */
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            width: 100%; /* Upewnienie się, że karta zajmuje dokładnie szerokość komórki siatki */
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .car-image-container {
+            height: 180px; /* Zmniejszono z 200px na 180px */
+            overflow: hidden;
+            position: relative;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .car-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Zmieniono z contain na cover, aby zdjęcie wypełniało kontener */
+        }
+
+        .car-info {
+            padding: 15px; /* Zmniejszono z 20px na 15px */
+        }
+
+        .car-title {
+            margin: 0 0 8px 0; /* Zmniejszono z 10px na 8px */
+            font-size: 18px; /* Zmniejszono z 20px na 18px */
+            color: #333;
+        }
+
+        .car-price {
+            font-size: 20px; /* Zmniejszono z 22px na 20px */
+            font-weight: bold;
+            color: #e63946;
+            margin: 12px 0; /* Zmniejszono z 15px na 12px */
+        }
+
+        .car-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        .car-spec {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .car-spec-label {
+            color: #555;
+        }
+
+        .car-spec-value {
+            color: #0066cc;
+            font-weight: 500;
+        }
+
+        .view-details {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            background: #0066cc;
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 4px;
+            margin-top: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .view-details:hover {
+            background: #014485;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            background: #333;
+            color: white;
+            border-radius: 8px;
+        }
+
+        .filters-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            margin-top: 15px;
+            padding: 12px;
+        }
+
+        .filters-row {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 130px;
+        }
+
+        .filter-label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: bold;
+            color: #555;
+            font-size: 13px;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .sort-options {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+
+        .sort-label {
+            margin-right: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .sort-select {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #666;
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 1100px) {
+            .filters-row {
+                flex-wrap: wrap;
+            }
+
+            .filter-group {
+                min-width: 170px;
+                margin-bottom: 5px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            header {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .logo-container {
+                padding-left: 0;
+                margin-bottom: 20px;
+            }
+
+            .search-controls {
+                margin-left: 0;
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cars-container {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .filters-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .sort-options {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logo-container">
+        <a href="index.html">
+            <img src="../images/site_logo1.png" alt="Komis Samochodowy" class="site-logo">
+        </a>
+    </div>
+
+    <div class="search-controls">
+        <div class="search-bar">
+            <input type="text" class="search-input" id="searchInput" placeholder="Wyszukaj markę, model lub rocznik...">
+            <button class="search-button">Szukaj</button>
+        </div>
+
+        <div class="filters-container">
+            <div class="filters-row">
+                <div class="filter-group">
+                    <label for="brandFilter" class="filter-label">Marka:</label>
+                    <select id="brandFilter" class="filter-select">
+                        <option value="">Wszystkie</option>
+                        <!-- Opcje będą wypełnione przez JS -->
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="yearFilter" class="filter-label">Rok produkcji:</label>
+                    <select id="yearFilter" class="filter-select">
+                        <option value="">Wszystkie</option>
+                        <!-- Opcje będą wypełnione przez JS -->
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="fuelFilter" class="filter-label">Rodzaj paliwa:</label>
+                    <select id="fuelFilter" class="filter-select">
+                        <option value="">Wszystkie</option>
+                        <!-- Opcje będą wypełnione przez JS -->
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="gearboxFilter" class="filter-label">Skrzynia biegów:</label>
+                    <select id="gearboxFilter" class="filter-select">
+                        <option value="">Wszystkie</option>
+                        <!-- Opcje będą wypełnione przez JS -->
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="sortSelect" class="filter-label">Sortuj według:</label>
+                    <select id="sortSelect" class="filter-select">
+                        <option value="price-asc">Cena: rosnąco</option>
+                        <option value="price-desc">Cena: malejąco</option>
+                        <option value="year-desc">Rok: od najnowszych</option>
+                        <option value="year-asc">Rok: od najstarszych</option>
+                        <option value="mileage-asc">Przebieg: rosnąco</option>
+                        <option value="mileage-desc">Przebieg: malejąco</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="cars-container" id="carsList">
+    <!-- Karty samochodów będą generowane przez JS -->
+</div>
+
+<footer>
+    <p>&copy; 2025 Komis Samochodowy. Wszelkie prawa zastrzeżone.</p>
+</footer>
+
+<script>
+    // Dane pojazdów
+    const carsData = [
+        {
+            id: 1,
+            brand: "Audi",
+            model: "A4",
+            engine: "2.0",
+            gearbox: "Automat.",
+            power: "190 KM",
+            fuel: "Benzyna",
+            year: 2018,
+            price: 85000,
+            mileage: 120000,
+            color: "Czarny",
+            images: [
+                "../images/audi_a4_1.png",
+                "../images/audi_a4_2.png",
+                "../images/audi_a4_3.png",
+                "../images/audi_a4_4.png",
+                "../images/audi_a4_5.png"
+            ],
+            description: "Audi A4 z 2018 roku to elegancki sedan premium, który łączy w sobie nowoczesną technologię" +
+                " z wyjątkowym komfortem jazdy."
+        },
+        {
+            id: 2,
+            brand: "BMW",
+            model: "320i",
+            engine: "2.0",
+            gearbox: "Manualna",
+            power: "150 KM",
+            fuel: "Benzyna",
+            year: 2006,
+            price: 20000,
+            mileage: 300000,
+            color: "Czarny",
+            images: [
+                "../images/bmw_320i_1.png",
+                "../images/bmw_320i_2.png",
+                "../images/bmw_320i_3.png",
+                "../images/bmw_320i_4.png",
+                "../images/bmw_320i_5.png"
+            ],
+            description: "BMW 320i z 2006 roku to klasyczny sedan, który wciąż cieszy się dużą popularnością" +
+                " dzięki połączeniu sportowego charakteru i solidnej niemieckiej inżynierii."
+        },
+        {
+            id: 3,
+            brand: "Toyota",
+            model: "Corolla",
+            engine: "1.8 Hybrid",
+            gearbox: "Automat.",
+            power: "140 KM",
+            fuel: "Benzyna",
+            year: 2024,
+            price: 135000,
+            mileage: 2000,
+            color: "Biały",
+            images: [
+                "../images/toyota_corolla_1.png",
+                "../images/toyota_corolla_2.png",
+                "../images/toyota_corolla_3.png",
+                "../images/toyota_corolla_4.png",
+                "../images/toyota_corolla_5.png",
+                "../images/toyota_corolla_6.png"
+            ],
+            description: "Toyota Corolla Hybrid z 2024 roku to nowoczesny sedan, który doskonale łączy oszczędność " +
+                "paliwa z dynamiką jazdy."
+        },
+        {
+            id: 4,
+            brand: "Toyota",
+            model: "RAV4",
+            engine: "2.5 Hybrid",
+            gearbox: "Automat.",
+            power: "178 KM",
+            fuel: "Benzyna",
+            year: 2022,
+            price: 149900,
+            mileage: 12000,
+            color: "Perłowa biel",
+            images: [
+                "../images/toyota_rav-4_1.png",
+                "../images/toyota_rav-4_2.png",
+                "../images/toyota_rav-4_3.png",
+                "../images/toyota_rav-4_4.png",
+                "../images/toyota_rav-4_5.png",
+                "../images/toyota_rav-4_6.png",
+                "../images/toyota_rav-4_7.png"
+            ],
+            description: "Toyota RAV4 Hybrid z 2022 roku to nowoczesny SUV, który łączy w sobie wydajność hybrydowego " +
+                "układu napędowego z przestronnością i komfortem jazdy."
+        }
+    ];
+
+    // Funkcja do renderowania listy samochodów
+    function renderCarsList(cars) {
+        const carsListContainer = document.getElementById('carsList');
+        carsListContainer.innerHTML = '';
+
+        if (cars.length === 0) {
+            carsListContainer.innerHTML = '<div class="no-results">Brak pojazdów spełniających kryteria wyszukiwania</div>';
+            return;
+        }
+
+        cars.forEach(car => {
+            const carCard = document.createElement('div');
+            carCard.className = 'car-card';
+            carCard.onclick = () => window.location.href = `car_details.html?id=${car.id}`;
+
+            carCard.innerHTML = `
+                    <div class="car-image-container">
+                        <img src="${car.images[0]}" alt="${car.brand} ${car.model}" class="car-image">
+                    </div>
+                    <div class="car-info">
+                        <h3 class="car-title">${car.brand} ${car.model}</h3>
+                        <div class="car-specs">
+                            <div class="car-spec">
+                                <span class="car-spec-label">Rok:</span>
+                                <span class="car-spec-value">${car.year}</span>
+                            </div>
+                            <div class="car-spec">
+                                <span class="car-spec-label">Przebieg:</span>
+                                <span class="car-spec-value">${car.mileage.toLocaleString()} km</span>
+                            </div>
+                            <div class="car-spec">
+                                <span class="car-spec-label">Silnik:</span>
+                                <span class="car-spec-value">${car.engine}</span>
+                            </div>
+                            <div class="car-spec">
+                                <span class="car-spec-label">Skrzynia:</span>
+                                <span class="car-spec-value">${car.gearbox}</span>
+                            </div>
+                        </div>
+                        <div class="car-price">${car.price.toLocaleString()} PLN</div>
+                        <a href="car_details.html?id=${car.id}" class="view-details">Zobacz szczegóły</a>
+                    </div>
+                `;
+
+            carsListContainer.appendChild(carCard);
+        });
+    }
+
+    // Funkcja do wypełniania filtrów unikalnymi wartościami
+    function populateFilters() {
+        const brands = [...new Set(carsData.map(car => car.brand))];
+        const years = [...new Set(carsData.map(car => car.year))].sort((a, b) => b - a);
+        const fuels = [...new Set(carsData.map(car => car.fuel))];
+        const gearboxes = [...new Set(carsData.map(car => car.gearbox))];
+
+        const brandFilter = document.getElementById('brandFilter');
+        brands.forEach(brand => {
+            const option = document.createElement('option');
+            option.value = brand;
+            option.textContent = brand;
+            brandFilter.appendChild(option);
+        });
+
+        const yearFilter = document.getElementById('yearFilter');
+        years.forEach(year => {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            yearFilter.appendChild(option);
+        });
+
+        const fuelFilter = document.getElementById('fuelFilter');
+        fuels.forEach(fuel => {
+            const option = document.createElement('option');
+            option.value = fuel;
+            option.textContent = fuel;
+            fuelFilter.appendChild(option);
+        });
+
+        const gearboxFilter = document.getElementById('gearboxFilter');
+        gearboxes.forEach(gearbox => {
+            const option = document.createElement('option');
+            option.value = gearbox;
+            option.textContent = gearbox;
+            gearboxFilter.appendChild(option);
+        });
+    }
+
+    // Funkcja do filtrowania samochodów na podstawie kryteriów
+    function filterCars() {
+        const brandValue = document.getElementById('brandFilter').value;
+        const yearValue = document.getElementById('yearFilter').value;
+        const fuelValue = document.getElementById('fuelFilter').value;
+        const gearboxValue = document.getElementById('gearboxFilter').value;
+        const searchValue = document.getElementById('searchInput').value.toLowerCase();
+        const sortValue = document.getElementById('sortSelect').value;
+
+        let filteredCars = [...carsData];
+
+        // Filtrowanie
+        if (brandValue) {
+            filteredCars = filteredCars.filter(car => car.brand === brandValue);
+        }
+
+        if (yearValue) {
+            filteredCars = filteredCars.filter(car => car.year === parseInt(yearValue));
+        }
+
+        if (fuelValue) {
+            filteredCars = filteredCars.filter(car => car.fuel.toLowerCase() === fuelValue.toLowerCase());
+        }
+
+        if (gearboxValue) {
+            filteredCars = filteredCars.filter(car => car.gearbox === gearboxValue);
+        }
+
+        if (searchValue) {
+            filteredCars = filteredCars.filter(car =>
+                car.brand.toLowerCase().includes(searchValue) ||
+                car.model.toLowerCase().includes(searchValue) ||
+                car.year.toString().includes(searchValue)
+            );
+        }
+
+        // Sortowanie
+        switch(sortValue) {
+            case 'price-asc':
+                filteredCars.sort((a, b) => a.price - b.price);
+                break;
+            case 'price-desc':
+                filteredCars.sort((a, b) => b.price - a.price);
+                break;
+            case 'year-desc':
+                filteredCars.sort((a, b) => b.year - a.year);
+                break;
+            case 'year-asc':
+                filteredCars.sort((a, b) => a.year - b.year);
+                break;
+            case 'mileage-asc':
+                filteredCars.sort((a, b) => a.mileage - b.mileage);
+                break;
+            case 'mileage-desc':
+                filteredCars.sort((a, b) => b.mileage - a.mileage);
+                break;
+        }
+
+        renderCarsList(filteredCars);
+    }
+
+    // Inicjalizacja strony
+    window.addEventListener('DOMContentLoaded', () => {
+        // Wypełnij filtry
+        populateFilters();
+
+        // Renderuj początkową listę
+        renderCarsList(carsData);
+
+        // Dodaj obsługę zdarzeń dla filtrów
+        document.getElementById('brandFilter').addEventListener('change', filterCars);
+        document.getElementById('yearFilter').addEventListener('change', filterCars);
+        document.getElementById('fuelFilter').addEventListener('change', filterCars);
+        document.getElementById('gearboxFilter').addEventListener('change', filterCars);
+        document.getElementById('sortSelect').addEventListener('change', filterCars);
+
+        // Obsługa wyszukiwarki
+        document.querySelector('.search-button').addEventListener('click', filterCars);
+        document.getElementById('searchInput').addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                filterCars();
+            }
+        });
+    });
+</script>
+</body>
+</html>
